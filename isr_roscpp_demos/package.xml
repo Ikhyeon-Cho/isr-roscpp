@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>isr_roscpp_demos</name>
+  <version>0.0.0</version>
+  <description>The isr_roscpp_demos package</description>
+
+  <maintainer email="isr@todo.todo">isr</maintainer>
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>isr_roscpp_node</depend>
+  <!-- <depend>roscpp</depend> -->
+
+</package>

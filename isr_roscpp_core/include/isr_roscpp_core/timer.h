@@ -10,7 +10,7 @@
 #ifndef ISR_ROSCPP_CORE_TIMER_H
 #define ISR_ROSCPP_CORE_TIMER_H
 
-#include <isr_roscpp/core/parameter.h>
+#include <isr_roscpp_core/parameter.h>
 
 namespace isr::roscpp
 {
@@ -51,11 +51,11 @@ public:
   }
 
   template <class T>
-  void registerCallback(void (T::*fp)(const ros::TimerEvent&), T* obj, bool autostart = true, bool oneshot = false)
+  void registerCallback(void (T::*fp)(const ros::TimerEvent&), T* obj, bool autostart = false, bool oneshot = false)
   {
     timer_ = nh_.createTimer(ros::Duration(duration_.value()), fp, obj, oneshot, autostart);
   }
-  
+
   void start()
   {
     timer_.start();
@@ -76,11 +76,6 @@ private:
   ros::Timer timer_;
   Parameter<double> duration_{ 0.1 };
 };
-
-inline bool Timer::readParameter(const std::string& param_name)
-{
-  return duration_.readParameter(param_name);
-}
 
 }  // namespace isr::roscpp
 
