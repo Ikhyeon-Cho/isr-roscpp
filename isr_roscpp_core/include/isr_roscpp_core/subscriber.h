@@ -73,7 +73,7 @@ public:
    * \param queue_size Msg queue size for subscribed topic (Default: 10)
    * **/
   template <class M>
-  void registerSubscriber(void (M::*fp)(const boost::shared_ptr<T const>&), M* obj, uint32_t queue_size = 10);
+  void addCallback(void (M::*fp)(const boost::shared_ptr<T const>&), M* obj, uint32_t queue_size = 10);
 
 private:
   ros::NodeHandle nh_;
@@ -96,7 +96,7 @@ inline bool Subscriber<T>::readParameter(const std::string& param_name, const st
 
 template <typename T>
 template <typename M>
-inline void Subscriber<T>::registerSubscriber(void (M::*fp)(const boost::shared_ptr<T const>&), M* obj,
+inline void Subscriber<T>::addCallback(void (M::*fp)(const boost::shared_ptr<T const>&), M* obj,
                                               uint32_t _queue_size)
 {
   queue_size_.set(_queue_size);

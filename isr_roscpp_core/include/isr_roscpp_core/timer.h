@@ -51,7 +51,7 @@ public:
   }
 
   template <class T>
-  void registerCallback(void (T::*fp)(const ros::TimerEvent&), T* obj, bool autostart = false, bool oneshot = false)
+  void addCallback(void (T::*fp)(const ros::TimerEvent&), T* obj, bool autostart = false, bool oneshot = false)
   {
     timer_ = nh_.createTimer(ros::Duration(duration_.value()), fp, obj, oneshot, autostart);
   }
