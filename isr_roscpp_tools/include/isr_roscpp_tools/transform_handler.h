@@ -32,7 +32,20 @@ public:
    * **/
   bool getTransform(geometry_msgs::TransformStamped& transform_stamped, const std::string& target_frame,
                     const std::string& source_frame, const ros::Time& time = ros::Time(0),
-                    const ros::Duration timeout = ros::Duration(0.01));
+                    const ros::Duration timeout = ros::Duration(0.01))
+  {
+    try
+    {
+      transform_stamped = tf_buffer_->lookupTransform(target_frame, source_frame, time, timeout);
+      return true;
+    }
+    catch (const tf2::TransformException& ex)
+    {
+      ROS_ERROR_STREAM_THROTTLE(1, "Failed to look up transform from " << source_frame << " to " << target_frame << ": "
+                                                                       << ex.what());  // 0.2us
+      return false;
+    }
+  }
 
   /*
    * \param in Data to be transformed
@@ -66,21 +79,24 @@ private:
 };
 // class TransformHandler
 
-bool TransformHandler::getTransform(geometry_msgs::TransformStamped& transform_stamped, const std::string& target_frame,
-                                    const std::string& source_frame, const ros::Time& time, const ros::Duration timeout)
-{
-  try
-  {
-    transform_stamped = tf_buffer_->lookupTransform(target_frame, source_frame, time, timeout);
-    return true;
-  }
-  catch (const tf2::TransformException& ex)
-  {
-    ROS_ERROR_STREAM_THROTTLE(1, "Failed to look up transform from " << source_frame << " to " << target_frame << ": "
-                                                                     << ex.what());  // 0.2us
-    return false;
-  }
-}
+// bool TransformHandler::getTransform(geometry_msgs::TransformStamped& transform_stamped, const std::string&
+// target_frame,
+//                                     const std::string& source_frame, const ros::Time& time, const ros::Duration
+//                                     timeout)
+// {
+//   try
+//   {
+//     transform_stamped = tf_buffer_->lookupTransform(target_frame, source_frame, time, timeout);
+//     return true;
+//   }
+//   catch (const tf2::TransformException& ex)
+//   {
+//     ROS_ERROR_STREAM_THROTTLE(1, "Failed to look up transform from " << source_frame << " to " << target_frame << ":
+//     "
+//                                                                      << ex.what());  // 0.2us
+//     return false;
+//   }
+// }
 
 template <typename T>
 inline std::tuple<T, bool> TransformHandler::doTransform(const T& in, const std::string& target_frame,

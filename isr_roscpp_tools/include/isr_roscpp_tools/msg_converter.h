@@ -78,7 +78,7 @@ public:
     return odom;
   }
 
-  static geometry_msgs::PoseStamped fromTransformStmapedToPoseStamped(const geometry_msgs::TransformStamped& _tf)
+  static geometry_msgs::PoseStamped fromTransformStampedToPoseStamped(const geometry_msgs::TransformStamped& _tf)
   {
     geometry_msgs::PoseStamped pose;
     pose.header = _tf.header;

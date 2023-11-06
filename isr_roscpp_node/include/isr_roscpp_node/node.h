@@ -34,8 +34,22 @@ private:
   ros::Time timestamp_;
 
 public:
-  Node();
-  Node(const ros::NodeHandle& nh);
+  Node() : nh_("~"), timestamp_(ros::Time::now())
+  {
+    ros::param::param<std::string>("/FrameIds/map", mapFrameId_, "map");
+    ros::param::param<std::string>("/FrameIds/base", baseFrameId_, "base_link");
+    ros::param::param<std::string>("/FrameIds/odom", odomFrameId_, "odom");
+    ros::param::param<std::string>("/FrameIds/lidar", lidarFrameId_, "lidar");
+  }
+  Node(const ros::NodeHandle& nh)
+  {
+    setTimestamp(ros::Time::now());
+
+    ros::param::param<std::string>("/FrameIds/map", mapFrameId_, "map");
+    ros::param::param<std::string>("/FrameIds/base", baseFrameId_, "base_link");
+    ros::param::param<std::string>("/FrameIds/odom", odomFrameId_, "odom");
+    ros::param::param<std::string>("/FrameIds/lidar", lidarFrameId_, "lidar");
+  }
 
   virtual ~Node() = default;
 
@@ -51,24 +65,6 @@ public:
 
   virtual void nodeRegistration() = 0;  // should be defined in the node class
 };
-
-Node::Node() : nh_("~"), timestamp_(ros::Time::now())
-{
-  ros::param::param<std::string>("/FrameIds/map", mapFrameId_, "map");
-  ros::param::param<std::string>("/FrameIds/base", baseFrameId_, "base_link");
-  ros::param::param<std::string>("/FrameIds/odom", odomFrameId_, "odom");
-  ros::param::param<std::string>("/FrameIds/lidar", lidarFrameId_, "lidar");
-}
-
-Node::Node(const ros::NodeHandle& nh)
-{
-  setTimestamp(ros::Time::now());
-
-  ros::param::param<std::string>("/FrameIds/map", mapFrameId_, "map");
-  ros::param::param<std::string>("/FrameIds/base", baseFrameId_, "base_link");
-  ros::param::param<std::string>("/FrameIds/odom", odomFrameId_, "odom");
-  ros::param::param<std::string>("/FrameIds/lidar", lidarFrameId_, "lidar");
-}
 
 }  // namespace isr::roscpp
 

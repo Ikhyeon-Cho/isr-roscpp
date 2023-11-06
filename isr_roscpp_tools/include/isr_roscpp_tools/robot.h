@@ -12,9 +12,9 @@
 
 #include <Eigen/Core>
 
-#include <isr_roscpp/core/publisher.h>
-#include <isr_roscpp/tools/transform_handler.h>
-#include <isr_roscpp/tools/msgConverterRos.h>
+#include <isr_roscpp_core/publisher.h>
+#include <isr_roscpp_tools/transform_handler.h>
+#include <isr_roscpp_tools/msg_converter.h>
 #include "isr_navigation/core/typedef.h"
 
 #include <pcl/point_cloud.h>
@@ -47,7 +47,7 @@ protected:  // Pure >> reset in each robot class
 
 private:
   // ROS
-  TransformHandlerROS transformHandler;
+  roscpp::TransformHandler transformHandler;
   nav_msgs::Odometry odometryPose_;  // Odometry pose
   geometry_msgs::PoseStamped pose_;  // Localized pose in map
 
@@ -87,7 +87,7 @@ public:
     if (!transformHandler.getTransform(baseToMap, mapFrame.value(), baseFrame.value()))
       return false;
 
-    pose_ = MsgsConverter::fromTransformStmapedToPoseStamped(baseToMap);
+    pose_ = roscpp::MsgsConverter::fromTransformStampedToPoseStamped(baseToMap);
     return true;
   }
 
@@ -97,7 +97,7 @@ public:
     if (!transformHandler.getTransform(baseToOdom, odomFrame.value(), baseFrame.value()))
       return false;
 
-    odometryPose_ = MsgsConverter::fromTransformStampedToOdometry(baseToOdom);
+    odometryPose_ = roscpp::MsgsConverter::fromTransformStampedToOdometry(baseToOdom);
     return true;
   }
 
