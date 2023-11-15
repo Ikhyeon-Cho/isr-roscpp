@@ -24,46 +24,29 @@ class Node
 public:
   TransformHandler transform_handler{};
 
-  std::string mapFrameId_;
-  std::string baseFrameId_;
-  std::string odomFrameId_;
-  std::string lidarFrameId_;
+  std::string map_frame_;
+  std::string base_frame_;
+  std::string odom_frame_;
+  std::string lidar_frame_;
 
 private:
   ros::NodeHandle nh_;  // need this to start and shutdown the node lifetime
-  ros::Time timestamp_;
 
 public:
-  Node() : nh_("~"), timestamp_(ros::Time::now())
+  Node() : nh_("~")
   {
-    ros::param::param<std::string>("/FrameIds/map", mapFrameId_, "map");
-    ros::param::param<std::string>("/FrameIds/base", baseFrameId_, "base_link");
-    ros::param::param<std::string>("/FrameIds/odom", odomFrameId_, "odom");
-    ros::param::param<std::string>("/FrameIds/lidar", lidarFrameId_, "lidar");
+    ros::param::param<std::string>("/FrameIds/map", map_frame_, "map");
+    ros::param::param<std::string>("/FrameIds/base", base_frame_, "base_link");
+    ros::param::param<std::string>("/FrameIds/odom", odom_frame_, "odom");
+    ros::param::param<std::string>("/FrameIds/lidar", lidar_frame_, "lidar");
   }
   Node(const ros::NodeHandle& nh)
   {
-    setTimestamp(ros::Time::now());
-
-    ros::param::param<std::string>("/FrameIds/map", mapFrameId_, "map");
-    ros::param::param<std::string>("/FrameIds/base", baseFrameId_, "base_link");
-    ros::param::param<std::string>("/FrameIds/odom", odomFrameId_, "odom");
-    ros::param::param<std::string>("/FrameIds/lidar", lidarFrameId_, "lidar");
+    ros::param::param<std::string>("/FrameIds/map", map_frame_, "map");
+    ros::param::param<std::string>("/FrameIds/base", base_frame_, "base_link");
+    ros::param::param<std::string>("/FrameIds/odom", odom_frame_, "odom");
+    ros::param::param<std::string>("/FrameIds/lidar", lidar_frame_, "lidar");
   }
-
-  virtual ~Node() = default;
-
-  const ros::Time& getTimestamp() const
-  {
-    return timestamp_;
-  }
-
-  void setTimestamp(const ros::Time& _timestamp)
-  {
-    timestamp_ = _timestamp;
-  }
-
-  virtual void nodeRegistration() = 0;  // should be defined in the node class
 };
 
 }  // namespace isr::roscpp

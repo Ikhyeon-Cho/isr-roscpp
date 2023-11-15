@@ -29,6 +29,7 @@ public:
   Publisher(const std::string& default_topic, uint32_t queue_size)
     : nh_("~"), topic_(default_topic), queue_size_(queue_size)
   {
+    registerPublisher();
   }
 
   /*
@@ -37,6 +38,7 @@ public:
    * **/
   Publisher(const std::string& default_topic) : nh_("~"), topic_(default_topic)
   {
+    registerPublisher();
   }
 
   /*
@@ -46,14 +48,7 @@ public:
    * **/
   Publisher(const ros::NodeHandle& nh, const std::string& default_topic) : nh_(nh), topic_(default_topic)
   {
-  }
-
-  /*
-   * Constructor for ROS1 publisher wrapper.
-   * \param nh Nodehandle in the node should be passed to the class object.
-   * **/
-  Publisher(const ros::NodeHandle& nh) : Publisher(nh, "topic_default")
-  {
+    registerPublisher();
   }
 
   /*
@@ -87,13 +82,17 @@ private:
 template <typename T>
 inline bool Publisher<T>::readParameter(const std::string& param_name, const std::string& default_topic)
 {
-  return topic_.readParameter(param_name, default_topic);
+  bool get_param = topic_.readParameter(param_name, default_topic);
+  registerPublisher();
+  return get_param;
 }
 
 template <typename T>
 inline bool Publisher<T>::readParameter(const std::string& param_name)
 {
-  return topic_.readParameter(param_name);
+  bool get_param = topic_.readParameter(param_name);
+  registerPublisher();
+  return get_param;
 }
 
 template <typename T>
@@ -114,7 +113,6 @@ inline void Publisher<T>::publish(const T& msg)
 {
   pub_.publish(msg);
 }
-
 
 }  // namespace isr::roscpp
 
