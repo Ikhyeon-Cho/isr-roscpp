@@ -18,7 +18,7 @@ SubscriberDemoNode::SubscriberDemoNode() : Node(), chatter_sub("/chatter", 1000)
 
 void SubscriberDemoNode::nodeRegistration()
 {
-  chatter_sub.registerSubscriber(&SubscriberDemoNode::ChatterCallback, this);
+  chatter_sub.registerCallback(&SubscriberDemoNode::ChatterCallback, this);
 }
 
 void SubscriberDemoNode::ChatterCallback(const std_msgs::String::ConstPtr& msg)
